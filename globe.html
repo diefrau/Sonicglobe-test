@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SONIC GLOBE — Dig the World's Music</title>
+  <link rel="stylesheet" href="stylesheet.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div id="cosmic-bg">
+  <div class="stars"></div>
+  <div class="nebula"></div>
+</div>
+
+<div id="d3-container"></div>
+
+<div id="header">
+  <div>
+    <a href="index.html" id="logo">SONIC<span>GLOBE</span></a>
+    <div id="tagline">모든 시대의 소리가 당신을 기다립니다</div>
+  </div>
+  <div id="header-right">
+    <div id="year-panel">
+      <div id="year-label">Select Decade</div>
+      <div id="year-selector">
+        <button class="year-btn" id="prev-year">◀</button>
+        <button id="current-year" type="button">1990s</button>
+        <button class="year-btn" id="next-year">▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="info-modal" class="hidden">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <div id="card-accent-bar"></div>
+    <button id="card-close">✕</button>
+    <div id="card-body">
+      <div id="card-meta">
+        <span id="card-country"></span>
+        <span id="card-year"></span>
+      </div>
+      <div id="card-song"></div>
+      <div id="card-artist"></div>
+      <div class="card-divider"></div>
+      <div class="card-meta-grid">
+        <div>
+          <div class="meta-label">Album</div>
+          <div class="meta-value" id="card-album">—</div>
+        </div>
+        <div>
+          <div class="meta-label">Release</div>
+          <div class="meta-value" id="card-release">—</div>
+        </div>
+      </div>
+      <div id="card-genres"></div>
+      <div id="card-desc"></div>
+    </div>
+  </div>
+</div>
+
+<div id="player-bar">
+  <div id="yt-wrap" class="visible">
+    <button id="yt-close" title="닫기">✕</button>
+    <div id="yt-iframe"></div>
+  </div>
+  <div id="player-track">
+    <div id="player-meta">
+      <span id="player-country-tag"></span>
+      <span id="player-year-tag"></span>
+    </div>
+    <div id="player-song-name">클릭하여 음악 탐색</div>
+    <div id="player-artist-name">SONIC GLOBE</div>
+  </div>
+  <div id="player-center-block">
+    <button id="btn-play-pause" class="ctrl-btn" disabled>
+      <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+        <polygon points="5,3 19,12 5,21"/>
+      </svg>
+      <svg id="icon-pause" viewBox="0 0 24 24" fill="currentColor" width="26" height="26" style="display:none">
+        <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+      </svg>
+    </button>
+    <div id="player-seek-row">
+      <span id="time-current">0:00</span>
+      <div id="seekbar"><div id="seekbar-fill"></div><div id="seekbar-thumb"></div></div>
+      <span id="time-total">0:00</span>
+    </div>
+  </div>
+  <div id="player-right-block">
+    <div id="player-no-audio">NO AUDIO</div>
+    <input type="range" id="volume-slider" min="0" max="100" value="70">
+  </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script type="module" src="script.js"></script>
+</body>
+</html>
