@@ -219,3 +219,13 @@
 - Updated the stylesheet cache-busting query string.
 - Verified with:
   - `qa-step13-surface-tuned-1280x720.png`
+
+### Step 14 - FHD Decade Layout Tuning
+- Adjusted the wide-screen decade coordinate preset for FHD browser viewports.
+- Moved the 2000s, 2010s, and 2020s labels further inside the visible planet area and reduced crowding on the right side.
+- Reduced the default desktop floating-option size slightly so labels fit the planet more cleanly in full-screen FHD.
+- Further reduced desktop option size and spread the right-side decade labels after visual FHD comparison.
+- Updated stylesheet and script cache-busting query strings.
+- Verified with:
+  - `qa-step14-fhd-1920x911-fix2.png`
+  - `qa-step14-mobile-390x844.png`

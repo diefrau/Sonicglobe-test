@@ -253,7 +253,7 @@ body.is-settled .site-header {
   background: transparent;
   color: var(--lime);
   font-family: var(--font-logo);
-  font-size: clamp(2.35rem, 3.2vw, 4.5rem);
+  font-size: clamp(2rem, 2.35vw, 3.4rem);
   line-height: 0.9;
   letter-spacing: 0;
   padding: 0;
