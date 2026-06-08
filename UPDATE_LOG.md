@@ -298,3 +298,38 @@
 - Updated the Signals script cache-busting query string.
 - Verified with:
   - `qa-step21-signals-korean-copy.png`
+
+### Step 22 - Archive Radial Search Prototype
+- Replaced the planned `MAP` page with an `ARCHIVE` page.
+- Updated header navigation from `DIG / SIGNALS / MAP` to `DIG / SIGNALS / ARCHIVE`.
+- Added `archive.html` and `archive.js`.
+- Built a central search hub with filters for:
+  - `ALL`
+  - `GENRE`
+  - `YEAR`
+  - `COUNTRY`
+  - `TITLE`
+- Rendered archive results as randomized radial song-title nodes around the search hub.
+- Added `NEARBY GENRES` chips for genre searching, including a manual City Pop adjacency set.
+- Added a song detail modal with metadata, description, genre chips, YouTube iframe playback, and YouTube outbound link.
+- Added responsive Archive layouts for desktop and mobile.
+- Adjusted radial placement to keep song-title nodes outside the central search panel.
+- Verified with:
+  - `qa-step22-archive-citypop-desktop-fix2.png`
+  - `qa-step22-archive-detail-desktop-fix2.png`
+  - `qa-step22-archive-mobile.png`
+
+### Step 23 - Archive Search Icon Interaction
+- Simplified the Archive search hub so the initial state shows only a search icon.
+- Removed the visible `ARCHIVE` and `SEARCH THE ORBIT` text from the search control.
+- Desktop search panel now opens from the center icon on hover/focus.
+- Mobile search panel now opens as a popup when the icon is tapped.
+- Added a mobile backdrop and Escape/backdrop close behavior.
+- Cleaned remaining Archive text encoding artifacts in the new Archive page and script.
+- Fixed mobile popup sizing by removing the transformed parent constraint from the mobile search hub.
+- Moved the desktop search panel below the icon so the icon no longer covers the search fields.
+- Hid the mobile search icon while the popup is open so it does not overlap the form.
+- Verified with:
+  - `qa-step23-archive-icon-desktop.png`
+  - `qa-step23-archive-hover-desktop.png`
+  - `qa-step23-archive-mobile-popup.png`

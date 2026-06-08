@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SONICGLOBE - Archive</title>
+  <meta name="description" content="SonicGlobe 전체 음악 아카이브 검색과 장르 디깅.">
+  <link rel="stylesheet" href="style.css?v=20260609-archivesearch2">
+</head>
+<body class="is-settled archive-page">
+  <main class="app archive-app">
+    <div class="space-bg" aria-hidden="true">
+      <div class="earth">
+        <div class="earth-surface"></div>
+        <div class="earth-rim"></div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <a class="logo" href="./index.html">SONICGLOBE</a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="./index.html">DIG</a>
+        <a href="./signals.html">SIGNALS</a>
+        <a href="./archive.html" aria-current="page">ARCHIVE</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+        <a href="./index.html">DIG</a>
+        <a href="./signals.html">SIGNALS</a>
+        <a href="./archive.html" aria-current="page">ARCHIVE</a>
+      </nav>
+    </header>
+
+    <div class="archive-search-backdrop" data-close-archive-search></div>
+    <section class="archive-hub" aria-label="Archive search">
+      <button id="archive-search-toggle" class="archive-search-toggle" type="button" aria-label="Open archive search" aria-expanded="false" aria-controls="archive-search-panel">
+        <span></span>
+      </button>
+      <div id="archive-search-panel" class="archive-search-panel">
+        <form id="archive-search" class="archive-search">
+          <label class="archive-filter-label">
+            <span>FILTER</span>
+            <select id="archive-filter" aria-label="Search filter">
+              <option value="all">ALL</option>
+              <option value="genre">GENRE</option>
+              <option value="year">YEAR</option>
+              <option value="country">COUNTRY</option>
+              <option value="title">TITLE</option>
+            </select>
+          </label>
+          <label class="archive-query-label">
+            <span>QUERY</span>
+            <input id="archive-query" type="search" autocomplete="off" placeholder="City Pop, 1970, South Korea, 커피 한 잔">
+          </label>
+        </form>
+        <p id="archive-count" class="archive-count">Loading archive...</p>
+        <div id="nearby-genres" class="nearby-genres" aria-label="Nearby genres"></div>
+      </div>
+    </section>
+
+    <section id="archive-field" class="archive-field" aria-label="Archive results"></section>
+  </main>
+
+  <div id="archive-detail" class="archive-detail" aria-hidden="true">
+    <div class="archive-detail-backdrop" data-close-archive></div>
+    <article class="archive-dialog" role="dialog" aria-modal="true" aria-labelledby="archive-title">
+      <button class="archive-close" type="button" aria-label="Close archive detail" data-close-archive>X</button>
+      <div class="archive-video">
+        <iframe id="archive-youtube" title="Archive YouTube player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <div class="archive-copy">
+        <p id="archive-detail-meta" class="signal-meta"></p>
+        <h2 id="archive-title"></h2>
+        <p id="archive-artist" class="archive-artist"></p>
+        <p id="archive-description" class="archive-description"></p>
+        <div id="archive-tags" class="archive-tags"></div>
+        <a id="archive-youtube-link" class="signal-action" href="#" target="_blank" rel="noreferrer">YOUTUBE에서 열기</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="nav.js?v=20260609-nav1"></script>
+  <script src="data.js?v=20260608-clickfix1"></script>
+  <script src="archive.js?v=20260609-archivesearch1"></script>
+</body>
+</html>
