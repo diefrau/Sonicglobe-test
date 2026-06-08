@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SONICGLOBE - Dig the World's Music</title>
+  <meta name="description" content="Explore global music history by decade, country, genre, continent, and random discovery.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <main id="app" class="app" data-view="decades">
+    <div class="space-bg" aria-hidden="true">
+      <div class="earth">
+        <div class="earth-surface"></div>
+        <div class="earth-rim"></div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <a class="logo" href="./index.html">SONICGLOBE</a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="#">Sample 1</a>
+        <a href="#">Sample 2</a>
+        <a href="#">Sample 3</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <section class="stage stage-decades" aria-label="Select decade">
+      <p class="stage-guide guide-decades">Select Your Decades</p>
+      <div id="decade-buttons" class="floating-options floating-decades">
+        <button class="float-button" style="--i: 0" type="button" data-decade="1950" data-layout-group="decades" data-layout-index="0">1950s</button>
+        <button class="float-button" style="--i: 1" type="button" data-decade="1960" data-layout-group="decades" data-layout-index="1">1960s</button>
+        <button class="float-button" style="--i: 2" type="button" data-decade="1970" data-layout-group="decades" data-layout-index="2">1970s</button>
+        <button class="float-button" style="--i: 3" type="button" data-decade="1980" data-layout-group="decades" data-layout-index="3">1980s</button>
+        <button class="float-button" style="--i: 4" type="button" data-decade="1990" data-layout-group="decades" data-layout-index="4">1990s</button>
+        <button class="float-button" style="--i: 5" type="button" data-decade="2000" data-layout-group="decades" data-layout-index="5">2000s</button>
+        <button class="float-button" style="--i: 6" type="button" data-decade="2010" data-layout-group="decades" data-layout-index="6">2010s</button>
+        <button class="float-button" style="--i: 7" type="button" data-decade="2020" data-layout-group="decades" data-layout-index="7">2020s</button>
+      </div>
+    </section>
+
+    <section class="stage stage-choices" aria-label="Select discovery mode" aria-hidden="true">
+      <p class="stage-guide guide-choices">Select Your Choices</p>
+      <div id="choice-buttons" class="floating-options floating-choices"></div>
+    </section>
+
+    <section class="stage stage-submenu" aria-label="Select detailed option" aria-hidden="true">
+      <p id="submenu-guide" class="stage-guide guide-submenu">Select Your Choices</p>
+      <div id="submenu-buttons" class="floating-options floating-submenu"></div>
+    </section>
+  </main>
+
+  <aside id="track-card" class="track-card" aria-live="polite" aria-hidden="true">
+    <button id="track-card-close" class="track-card-close" type="button" aria-label="Close song details">X</button>
+    <div class="track-card-meta">
+      <span id="card-country">SONIC GLOBE</span>
+      <span id="card-year">----</span>
+    </div>
+    <h2 id="card-song">클릭하며 음악 탐색</h2>
+    <p id="card-artist">Select a decade</p>
+    <p id="card-description"></p>
+  </aside>
+
+  <footer class="player" aria-label="Music player">
+    <div id="youtube-frame-wrap" class="youtube-frame-wrap" aria-hidden="true">
+      <button id="youtube-close" type="button" aria-label="Close YouTube player">X</button>
+      <iframe id="youtube-frame" title="YouTube player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <button id="youtube-button" class="youtube-button" type="button" aria-label="Open YouTube player">
+      <span></span>
+    </button>
+
+    <div class="player-track">
+      <div class="player-meta">
+        <span id="player-country">SONIC GLOBE</span>
+        <span id="player-year">----</span>
+      </div>
+      <strong id="player-song">클릭하며 음악 탐색</strong>
+      <span id="player-artist">SONIC GLOBE</span>
+    </div>
+
+    <div class="player-center">
+      <div class="waveform" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <button id="play-button" class="play-button" type="button" aria-label="Play selected song" disabled>
+        <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4.5v15l12-7.5-12-7.5Z"></path>
+        </svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.5 4.5h4v15h-4v-15Zm7 0h4v15h-4v-15Z"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="player-volume">
+      <button id="mute-button" class="mute-button" type="button" aria-label="Mute audio">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9.5v5h4l5 4.5v-14l-5 4.5H4Z"></path>
+          <path d="M16 8.5c1.2 1.7 1.2 5.3 0 7"></path>
+        </svg>
+      </button>
+      <input id="volume-slider" type="range" min="0" max="100" value="70" aria-label="Volume">
+    </div>
+  </footer>
+
+  <script src="data.js?v=20260608-clickfix1"></script>
+  <script src="app.js?v=20260608-clickfix1"></script>
+</body>
+</html>
