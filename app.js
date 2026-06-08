@@ -54,7 +54,7 @@ const continentMap = {
 const choiceConfig = [
   { id: 'famous', label: 'FAMOUS' },
   { id: 'countries', label: 'COUNTRIES' },
-  { id: 'random', label: 'RANDOM' },
+  { id: 'random', label: 'SURPRISE ME' },
   { id: 'continents', label: 'CONTINENTS' },
   { id: 'genres', label: 'GENRES' },
 ];
@@ -495,7 +495,7 @@ function sortedUnique(values) {
 
 function handleChoice(choiceId) {
   if (choiceId === 'random') {
-    selectTrack(randomFrom(tracksForDecade()), 'RANDOM');
+    selectTrack(randomFrom(tracksForDecade()), 'SURPRISE ME');
     return;
   }
 

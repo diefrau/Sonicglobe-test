@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SONICGLOBE - Signals</title>
+  <meta name="description" content="SonicGlobe 음악 아카이브에서 수신한 추천 신호와 짧은 디깅 노트.">
+  <link rel="stylesheet" href="style.css?v=20260609-signalglass2">
+</head>
+<body class="is-settled signals-page">
+  <main class="app info-page info-page-signals signals-app">
+    <div class="space-bg" aria-hidden="true">
+      <div class="earth">
+        <div class="earth-surface"></div>
+        <div class="earth-rim"></div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <a class="logo" href="./index.html">SONICGLOBE</a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="./index.html">DIG</a>
+        <a href="./signals.html" aria-current="page">SIGNALS</a>
+        <a href="./map.html">MAP</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+        <a href="./index.html">DIG</a>
+        <a href="./signals.html" aria-current="page">SIGNALS</a>
+        <a href="./map.html">MAP</a>
+      </nav>
+    </header>
+
+    <section class="signals-hero" aria-label="Signals introduction">
+      <p class="info-kicker">SIGNALS</p>
+      <h1>RECEIVED FROM THE ARCHIVE</h1>
+      <p>서로 다른 시대, 장면, 좌표에서 수신한 짧은 음악 디깅 노트.</p>
+    </section>
+
+    <section class="signals-board" aria-label="Signal articles">
+      <article class="signal-card signal-card-featured" tabindex="0" role="button" data-signal-id="today">
+        <p class="signal-type">TODAY'S SIGNAL</p>
+        <p class="signal-meta">JAPAN · 2016 · CITY POP / DANCE</p>
+        <h2>恋</h2>
+        <p>호시노 겐은 밝은 팝 훅을 하나의 사회적 움직임으로 확장하며, 시티팝의 온기를 스트리밍 시대의 댄스 감각으로 옮겨왔다.</p>
+      </article>
+
+      <article class="signal-card" tabindex="0" role="button" data-signal-id="hidden">
+        <p class="signal-type">HIDDEN GEM</p>
+        <p class="signal-meta">SOUTH KOREA · 1969 · SOUL</p>
+        <h2>커피 한 잔</h2>
+        <p>신중현 사운드의 궤도에서 튀어나온 짧은 전기적 신호. 한국 팝이 더 거칠고 뜨겁게 변하기 시작한 순간을 들려준다.</p>
+      </article>
+
+      <article class="signal-card" tabindex="0" role="button" data-signal-id="scene">
+        <p class="signal-type">SCENE SPOTLIGHT</p>
+        <p class="signal-meta">JAMAICA · 1970S · ROOTS REGGAE</p>
+        <h2>No Woman No Cry</h2>
+        <p>고난, 장소, 기억을 공동체의 코러스로 바꾼 노래. 레게가 세계의 언어가 되는 과정을 부드럽지만 강하게 보여준다.</p>
+      </article>
+
+      <article class="signal-card signal-card-tall" tabindex="0" role="button" data-signal-id="archive">
+        <p class="signal-type">FROM THE ARCHIVE</p>
+        <p class="signal-meta">BRAZIL · 1964 · BOSSA NOVA</p>
+        <h2>Garota de Ipanema</h2>
+        <p>부드러운 리듬과 열린 공기감. 보사노바가 브라질의 해안적 모더니즘을 세계적인 청취 습관으로 바꾼 장면이다.</p>
+      </article>
+
+      <article class="signal-card" tabindex="0" role="button" data-signal-id="surprise">
+        <p class="signal-type">SURPRISE SIGNAL</p>
+        <p class="signal-meta">NIGERIA · 1976 · AFROBEAT</p>
+        <h2>Zombie</h2>
+        <p>긴 그루브가 정치적 전압으로 변하는 순간. 브라스, 리듬, 비판이 하나의 몸처럼 움직인다.</p>
+      </article>
+    </section>
+  </main>
+
+  <div id="signal-modal" class="signal-modal" aria-hidden="true">
+    <div class="signal-modal-backdrop" data-close-signal></div>
+    <article class="signal-dialog" role="dialog" aria-modal="true" aria-labelledby="signal-modal-title">
+      <button class="signal-modal-close" type="button" aria-label="Close signal" data-close-signal>X</button>
+      <div class="signal-video">
+        <iframe id="signal-youtube" title="Signal YouTube player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <div class="signal-copy">
+        <p id="signal-modal-type" class="signal-type">SIGNAL</p>
+        <p id="signal-modal-meta" class="signal-meta"></p>
+        <h2 id="signal-modal-title"></h2>
+        <p id="signal-modal-artist" class="signal-artist"></p>
+        <div id="signal-modal-body" class="signal-body"></div>
+        <a id="signal-youtube-link" class="signal-action" href="#" target="_blank" rel="noreferrer">YOUTUBE에서 열기</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="nav.js?v=20260609-nav1"></script>
+  <script src="signals.js?v=20260609-korean1"></script>
+</body>
+</html>

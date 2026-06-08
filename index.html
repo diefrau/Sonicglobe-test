@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SONICGLOBE - Dig the World's Music</title>
   <meta name="description" content="Explore global music history by decade, country, genre, continent, and random discovery.">
-  <link rel="stylesheet" href="style.css?v=20260609-stablelayout2">
+  <link rel="stylesheet" href="style.css?v=20260609-nav1">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
@@ -21,15 +21,20 @@
     <header class="site-header">
       <a class="logo" href="./index.html">SONICGLOBE</a>
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="#">Sample 1</a>
-        <a href="#">Sample 2</a>
-        <a href="#">Sample 3</a>
+        <a href="./index.html" aria-current="page">DIG</a>
+        <a href="./signals.html">SIGNALS</a>
+        <a href="./map.html">MAP</a>
       </nav>
-      <button class="menu-button" type="button" aria-label="Open menu">
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span>
         <span></span>
         <span></span>
       </button>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+        <a href="./index.html" aria-current="page">DIG</a>
+        <a href="./signals.html">SIGNALS</a>
+        <a href="./map.html">MAP</a>
+      </nav>
     </header>
 
     <section class="stage stage-decades" aria-label="Select decade">
@@ -113,7 +118,8 @@
     </div>
   </footer>
 
+  <script src="nav.js?v=20260609-nav1"></script>
   <script src="data.js?v=20260608-clickfix1"></script>
-  <script src="app.js?v=20260609-stablelayout2"></script>
+  <script src="app.js?v=20260609-surpriseme1"></script>
 </body>
 </html>

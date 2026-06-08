@@ -238,3 +238,63 @@
 - Updated stylesheet and script cache-busting query strings.
 - Verified with:
   - `qa-step15-stable-resize-1920x911.png`
+
+### Step 16 - Random Label Rename
+- Renamed the choice button from `RANDOM` to `SURPRISE ME`.
+- Updated the selected track source label to show `SURPRISE ME` when random discovery is used.
+- Updated the script cache-busting query string.
+- Verified with:
+  - `qa-step16-surpriseme-desktop.png`
+  - `qa-step16-surpriseme-mobile.png`
+
+### Step 17 - Header Navigation Pages
+- Replaced the temporary header items with `DIG`, `SIGNALS`, and `MAP`.
+- Linked `DIG` to `index.html`.
+- Added placeholder pages:
+  - `signals.html`
+  - `map.html`
+- Added a shared `nav.js` mobile menu toggle for the header navigation.
+- Added active navigation styling for the current page.
+- Updated stylesheet and navigation script cache-busting query strings.
+- Verified with:
+  - `qa-step17-signals-desktop.png`
+  - `qa-step17-mobile-menu.png`
+
+### Step 18 - Signals Article Cards and Modal
+- Replaced the placeholder Signals page with article-style signal cards.
+- Added sections/cards for:
+  - `TODAY'S SIGNAL`
+  - `HIDDEN GEM`
+  - `SCENE SPOTLIGHT`
+  - `FROM THE ARCHIVE`
+  - `SURPRISE SIGNAL`
+- Added `signals.js` for opening article cards in a modal.
+- Added a modal with long-form body copy, YouTube iframe embed, close controls, keyboard activation, and YouTube outbound link.
+- Added responsive desktop and mobile layouts for the Signals board and modal.
+- Verified with:
+  - `qa-step18-signals-board-desktop.png`
+  - `qa-step18-signals-modal-desktop.png`
+  - `qa-step18-signals-board-mobile.png`
+  - `qa-step18-signals-modal-mobile.png`
+
+### Step 19 - Signals Song Title Typeface
+- Changed song titles in Signals cards and the Signals modal from `Black Han Sans` to `Pretendard JP Variable`.
+- Kept the broader Signals hero and navigation typography unchanged.
+- Updated the Signals stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step19-signals-pretendard-title.png`
+
+### Step 20 - Signals Translucent Card Surface
+- Changed Signals article cards from opaque paper-like backgrounds to translucent white panels.
+- Added subtle blur, saturation, inset highlight, lighter border, and softer shadow for a glass-adjacent surface without a full Liquid Glass effect.
+- Raised the white panel opacity slightly after visual review so cards keep a translucent but brighter surface over darker planet areas.
+- Updated the Signals stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step20-signals-translucent-cards-fix2.png`
+
+### Step 21 - Signals Korean Article Copy
+- Rewrote the Signals card summaries and modal article bodies in Korean.
+- Restored readable Korean/Japanese song titles and artist names in `signals.html` and `signals.js`.
+- Updated the Signals script cache-busting query string.
+- Verified with:
+  - `qa-step21-signals-korean-copy.png`
