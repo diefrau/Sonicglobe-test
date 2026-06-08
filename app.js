@@ -72,12 +72,12 @@ const planetLayouts = {
       [0.78, 0.67],
     ],
     choices: [
-      [0.43, 0.73],
-      [0.57, 0.26],
-      [0.48, 0.60],
-      [0.61, 0.43],
-      [0.75, 0.41],
-      [0.74, 0.64],
+      [0.38, 0.64],
+      [0.52, 0.30],
+      [0.42, 0.52],
+      [0.58, 0.44],
+      [0.68, 0.40],
+      [0.66, 0.58],
     ],
     submenu: [
       [0.55, 0.28],
@@ -566,6 +566,22 @@ function setText(selector, value) {
   if (el) el.textContent = value || '';
 }
 
+function sendYouTubeCommand(func, args = []) {
+  if (!youtubeFrame.contentWindow) return;
+  youtubeFrame.contentWindow.postMessage(JSON.stringify({
+    event: 'command',
+    func,
+    args,
+  }), '*');
+}
+
+function syncYouTubeVolume() {
+  if (!state.selectedTrack || !state.selectedTrack.youtubeId) return;
+
+  sendYouTubeCommand('setVolume', [state.volume]);
+  sendYouTubeCommand(state.isMuted || state.volume === 0 ? 'mute' : 'unMute');
+}
+
 function selectTrack(track, sourceLabel) {
   if (!track) return;
   state.selectedTrack = track;
@@ -598,11 +614,13 @@ function playVideo() {
   if (!track || !track.youtubeId) return;
 
   const mute = state.isMuted ? 1 : 0;
-  youtubeFrame.src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&mute=${mute}&controls=1&rel=0&modestbranding=1&playsinline=1`;
+  youtubeFrame.src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&mute=${mute}&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
   youtubeWrap.classList.add('is-active');
   youtubeWrap.setAttribute('aria-hidden', 'false');
   state.isPlaying = true;
   player.classList.add('is-playing');
+  window.setTimeout(syncYouTubeVolume, 700);
+  window.setTimeout(syncYouTubeVolume, 1400);
 }
 
 function stopVideo() {
@@ -629,12 +647,19 @@ function setupPlayer() {
 
   $('#mute-button').addEventListener('click', () => {
     state.isMuted = !state.isMuted;
-    if (state.isPlaying) playVideo();
+    syncYouTubeVolume();
+    $('#mute-button').setAttribute('aria-label', state.isMuted ? 'Unmute audio' : 'Mute audio');
   });
 
   $('#volume-slider').addEventListener('input', (event) => {
     state.volume = Number(event.target.value);
     state.isMuted = state.volume === 0;
+    syncYouTubeVolume();
+    $('#mute-button').setAttribute('aria-label', state.isMuted ? 'Unmute audio' : 'Mute audio');
+  });
+
+  youtubeFrame.addEventListener('load', () => {
+    window.setTimeout(syncYouTubeVolume, 300);
   });
 
   $('#track-card-close').addEventListener('click', () => {

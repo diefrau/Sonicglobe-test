@@ -170,3 +170,20 @@
   - `node --check app.js`
   - `node --check data.js`
   - `qa-step8-clickfix-file-1280x720.png`
+
+### Step 9 - Player Slot, Volume Control, and Choice Button Tuning
+- Reduced the bottom-left YouTube media slot toward a 16:9 proportion:
+  - Desktop slot: `132px x 74px`
+  - Mobile/tablet slot: `110px x 62px`
+- Added `enablejsapi=1` to the YouTube embed URL.
+- Wired the mute button and volume slider to the YouTube iframe through `postMessage` commands:
+  - `setVolume`
+  - `mute`
+  - `unMute`
+- Added iframe `referrerpolicy="strict-origin-when-cross-origin"`.
+- Adjusted the choice button layout so options sit more cleanly around the planet center instead of crowding the far-right side.
+- Fixed hidden-stage buttons reappearing over the active view by hiding buttons/guides inside `aria-hidden="true"` stages.
+- Verified with:
+  - `node --check app.js`
+  - `node --check data.js`
+  - `qa-step9-choices-fixed-1920x907.png`

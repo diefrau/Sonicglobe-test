@@ -13,7 +13,7 @@
   --hot: #ef2f8f;
   --panel: rgba(2, 8, 15, 0.94);
   --player-height: 74px;
-  --media-slot-width: 184px;
+  --media-slot-width: 132px;
 }
 
 * {
@@ -272,6 +272,13 @@ body.is-settled .float-button {
   transform: none;
 }
 
+.stage[aria-hidden='true'] .float-button,
+.stage[aria-hidden='true'] .stage-guide {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .app[data-view='choices'] .float-button,
 .app[data-view='submenu'] .float-button {
   animation-delay: calc(0.12s + var(--i, 0) * 0.055s);
@@ -461,7 +468,7 @@ body.is-settled .player {
 .youtube-button::before {
   content: '';
   position: absolute;
-  left: 28px;
+  left: 24px;
   top: 50%;
   width: 68px;
   height: 42px;
@@ -472,7 +479,7 @@ body.is-settled .player {
 
 .youtube-button span {
   position: absolute;
-  left: 62px;
+  left: 58px;
   top: 50%;
   width: 0;
   height: 0;
@@ -700,7 +707,7 @@ body.is-settled .player {
 @media (max-width: 900px) {
   :root {
     --player-height: 62px;
-    --media-slot-width: 92px;
+    --media-slot-width: 110px;
   }
 
   .site-header {
@@ -816,14 +823,14 @@ body.is-settled .player {
   }
 
   .youtube-button::before {
-    left: 12px;
+    left: 18px;
     width: 64px;
     height: 40px;
     border-radius: 12px;
   }
 
   .youtube-button span {
-    left: 44px;
+    left: 50px;
     border-top-width: 8px;
     border-bottom-width: 8px;
     border-left-width: 14px;
