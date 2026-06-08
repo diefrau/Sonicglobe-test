@@ -67,9 +67,9 @@ const planetLayouts = {
       [0.42, 0.41],
       [0.38, 0.64],
       [0.54, 0.65],
-      [0.62, 0.53],
-      [0.66, 0.70],
-      [0.73, 0.60],
+      [0.60, 0.52],
+      [0.63, 0.70],
+      [0.68, 0.59],
     ],
     choices: [
       [0.38, 0.64],
@@ -224,6 +224,7 @@ function setView(view) {
 }
 
 let layoutFrame = 0;
+let resizeSettleTimers = [];
 
 function currentLayoutSet() {
   const viewport = viewportSize();
@@ -356,6 +357,14 @@ function guidePointOutsidePlanet(guide, earthRect) {
   const gap = 22;
   const headerSafe = viewport.width <= 600 ? 88 : 116;
   const bottomSafe = viewport.height - playerHeight - guideHeight - 18;
+
+  if (app.dataset.view === 'decades' && viewport.width > 900) {
+    return {
+      left: clamp(viewport.width * 0.72, 16, viewport.width - guideWidth - 16),
+      top: clamp(viewport.height * 0.15, headerSafe, bottomSafe),
+    };
+  }
+
   let left = visibleRect.right + gap;
   let top = visibleRect.top + visibleRect.height * (app.dataset.view === 'decades' ? 0.42 : 0.22);
 
@@ -407,6 +416,12 @@ function requestLayout() {
     layoutFloatingUI();
   });
   window.setTimeout(layoutFloatingUI, 40);
+}
+
+function scheduleResizeLayout() {
+  requestLayout();
+  resizeSettleTimers.forEach((timer) => window.clearTimeout(timer));
+  resizeSettleTimers = [140, 360, 720, 1120].map((delay) => window.setTimeout(requestLayout, delay));
 }
 
 function goToDecades() {
@@ -741,9 +756,12 @@ function init() {
   setupPlayer();
   setupStars();
   initFromUrlParams();
-  window.addEventListener('resize', requestLayout);
+  window.addEventListener('resize', scheduleResizeLayout);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', scheduleResizeLayout);
+  }
   window.addEventListener('orientationchange', () => {
-    window.setTimeout(requestLayout, 120);
+    window.setTimeout(scheduleResizeLayout, 120);
   });
   if (document.fonts) {
     document.fonts.ready.then(requestLayout);

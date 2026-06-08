@@ -229,3 +229,12 @@
 - Verified with:
   - `qa-step14-fhd-1920x911-fix2.png`
   - `qa-step14-mobile-390x844.png`
+
+### Step 15 - Stable Desktop Relayout
+- Removed the desktop decade guide placement branch that could flip between side and top positions during screen-size changes.
+- Fixed the desktop decade guide to a stable star-field position.
+- Moved the right-side decade labels slightly further inside the planet to reduce edge snapping after relayout.
+- Added delayed resize relayout passes so button coordinates are recalculated after the planet resize transition settles.
+- Updated stylesheet and script cache-busting query strings.
+- Verified with:
+  - `qa-step15-stable-resize-1920x911.png`
