@@ -187,3 +187,35 @@
   - `node --check app.js`
   - `node --check data.js`
   - `qa-step9-choices-fixed-1920x907.png`
+
+### Step 10 - Opening Button Position Stabilization
+- Fixed the visible jump where decade buttons first appeared at CSS fallback positions and then moved to JS-calculated planet positions.
+- Floating option buttons now stay hidden until the planet-based layout calculation has completed.
+- Added an `app.is-layout-ready` gate so only calculated `is-laid-out` buttons can become visible after the opening sequence settles.
+- Updated cache-busting query strings for `style.css` and `app.js` so the browser loads the corrected opening logic.
+- Verified with:
+  - `node --check app.js`
+  - `node --check data.js`
+  - `qa-step10-opening-2600.png`
+  - `qa-step10-opening-4200.png`
+  - `qa-step10-opening-mobile-4200.png`
+
+### Step 11 - YouTube Slot Background Fill
+- Changed the bottom-left YouTube button slot from transparent to solid black so the planet background no longer shows through behind the icon.
+- Updated the stylesheet cache-busting query string.
+
+### Step 12 - Map Texture Application
+- Added `map_texture.jpg` as the Earth surface texture source.
+- Blended the texture into the existing CSS planet surface so the blue lighting, grid overlay, rim glow, and shadow remain intact.
+- Updated the stylesheet cache-busting query string.
+- Verified with:
+  - `http://127.0.0.1:4174/map_texture.jpg`
+  - `qa-step12-maptexture-1280x720.png`
+
+### Step 13 - Planet Surface Line Removal and Color Tuning
+- Removed the repeating CSS grid/radial line overlays from the planet surface.
+- Increased the planet texture saturation while lowering overall brightness for a deeper blue look.
+- Darkened the inner shadow on the planet surface.
+- Updated the stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step13-surface-tuned-1280x720.png`

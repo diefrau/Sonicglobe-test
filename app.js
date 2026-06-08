@@ -216,6 +216,7 @@ function makeButton(label, onClick, options = {}) {
 
 function setView(view) {
   app.dataset.view = view;
+  app.classList.remove('is-layout-ready');
   $('.stage-decades').setAttribute('aria-hidden', String(view !== 'decades'));
   $('.stage-choices').setAttribute('aria-hidden', String(view !== 'choices'));
   $('.stage-submenu').setAttribute('aria-hidden', String(view !== 'submenu'));
@@ -342,6 +343,8 @@ function layoutFloatingButtons() {
     button.style.setProperty('--layout-top', `${Math.round(fittedPoint.y)}px`);
     button.classList.add('is-laid-out');
   });
+
+  app.classList.add('is-layout-ready');
 }
 
 function guidePointOutsidePlanet(guide, earthRect) {
