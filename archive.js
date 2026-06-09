@@ -5,6 +5,7 @@ const archiveFilter = document.querySelector('#archive-filter');
 const archiveQuery = document.querySelector('#archive-query');
 const archiveCount = document.querySelector('#archive-count');
 const nearbyGenres = document.querySelector('#nearby-genres');
+const archiveHub = document.querySelector('.archive-hub');
 const archiveSearchToggle = document.querySelector('#archive-search-toggle');
 const archiveDetail = document.querySelector('#archive-detail');
 const archiveFrame = document.querySelector('#archive-youtube');
@@ -130,23 +131,17 @@ function createArchiveNode(track, index, total) {
   button.title = `${track.song} - ${track.artist}`;
   button.style.setProperty('--i', index);
 
-  const ring = 0.38 + Math.sqrt((index + 1) / Math.max(total, 1)) * 0.62;
-  const angle = stableRandom(index, 1.73) * Math.PI * 2;
-  const jitter = 0.72 + stableRandom(index, 2.91) * 0.28;
-  const radius = ring * jitter;
-  let x = 50 + Math.cos(angle) * radius * 43;
-  let y = 50 + Math.sin(angle) * radius * 37;
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  const spread = Math.sqrt((index + 0.5) / Math.max(total, 1));
+  const angle = index * goldenAngle + stableRandom(index, 1.73) * 0.95;
+  const orbit = (0.46 + spread * 0.54) * (0.9 + stableRandom(index, 2.91) * 0.16);
+  const xJitter = (stableRandom(index, 3.67) - 0.5) * 4.8;
+  const yJitter = (stableRandom(index, 4.43) - 0.5) * 4.2;
+  const x = 50 + Math.cos(angle) * orbit * 44 + xJitter;
+  const y = 50 + Math.sin(angle) * orbit * 39 + yJitter;
 
-  if (x > 22 && x < 78 && y > 10 && y < 72) {
-    if (Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle))) {
-      x = Math.cos(angle) >= 0 ? 76 + stableRandom(index, 4.3) * 6 : 24 - stableRandom(index, 4.3) * 6;
-    } else {
-      y = Math.sin(angle) >= 0 ? 74 + stableRandom(index, 4.9) * 8 : 24 - stableRandom(index, 4.9) * 6;
-    }
-  }
-
-  button.style.left = `${Math.max(5, Math.min(95, x))}%`;
-  button.style.top = `${Math.max(12, Math.min(91, y))}%`;
+  button.style.left = `${Math.max(6, Math.min(94, x))}%`;
+  button.style.top = `${Math.max(8, Math.min(92, y))}%`;
   button.addEventListener('click', () => openArchiveTrack(track, button));
   return button;
 }
@@ -175,6 +170,7 @@ function updateArchive() {
 }
 
 function openArchiveSearch() {
+  document.body.classList.remove('is-archive-search-dismissed');
   document.body.classList.add('is-archive-search-open');
   archiveSearchToggle?.setAttribute('aria-expanded', 'true');
   if (window.matchMedia('(max-width: 900px)').matches) {
@@ -182,9 +178,12 @@ function openArchiveSearch() {
   }
 }
 
-function closeArchiveSearch() {
+function closeArchiveSearch(options = {}) {
   document.body.classList.remove('is-archive-search-open');
   archiveSearchToggle?.setAttribute('aria-expanded', 'false');
+  if (options.dismissHover) {
+    document.body.classList.add('is-archive-search-dismissed');
+  }
 }
 
 function openArchiveTrack(track, sourceButton) {
@@ -255,7 +254,13 @@ document.querySelectorAll('[data-close-archive]').forEach((control) => {
 });
 
 document.querySelectorAll('[data-close-archive-search]').forEach((control) => {
-  control.addEventListener('click', closeArchiveSearch);
+  control.addEventListener('click', () => {
+    closeArchiveSearch({ dismissHover: control.classList.contains('archive-search-close') });
+  });
+});
+
+archiveSearchToggle?.addEventListener('mouseenter', () => {
+  document.body.classList.remove('is-archive-search-dismissed');
 });
 
 window.addEventListener('keydown', (event) => {

@@ -333,3 +333,30 @@
   - `qa-step23-archive-icon-desktop.png`
   - `qa-step23-archive-hover-desktop.png`
   - `qa-step23-archive-mobile-popup.png`
+
+### Step 24 - Archive Search Popup Close Control
+- Added a close button inside the Archive search panel.
+- Connected the close button to the existing search popup close behavior.
+- Added a dismissed hover state so the desktop panel stays closed after pressing close while the cursor is still near the search hub.
+- Kept mobile close behavior aligned with the backdrop and Escape key close behavior.
+- Updated Archive cache-busting query strings for the stylesheet and script.
+- Verified with:
+  - `qa-step24-archive-close-desktop.png`
+  - `qa-step24-archive-close-mobile.png`
+
+### Step 25 - Archive Search Icon Polish
+- Rebalanced the Archive search icon geometry so the magnifier handle stays inside the circular button cleanly.
+- Updated the Archive stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step25-search-icon-desktop.png`
+  - `qa-step25-search-icon-mobile.png`
+
+### Step 26 - Archive Radial Field Refinement
+- Restyled the Archive search icon into a heavier magnifier shape with a thick ring and handle.
+- Repositioned the magnifier artwork inside the circular button so the full icon feels visually centered.
+- Reworked Archive song placement from rectangular edge avoidance to a circular golden-angle distribution.
+- Added a larger circular empty zone around the search icon so titles radiate outward instead of crowding the center.
+- Updated Archive cache-busting query strings for stylesheet and script.
+- Verified with:
+  - `qa-step26-archive-radial-desktop.png`
+  - `qa-step26-archive-radial-mobile.png`
