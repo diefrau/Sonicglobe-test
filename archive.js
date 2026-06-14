@@ -1,4 +1,4 @@
-const archiveDatabase = window.MUSIC_DATABASE || {};
+﻿const archiveDatabase = window.MUSIC_DATABASE || {};
 const archiveField = document.querySelector('#archive-field');
 const archiveForm = document.querySelector('#archive-search');
 const archiveFilter = document.querySelector('#archive-filter');
@@ -29,6 +29,13 @@ const genreNeighbors = {
 let archiveTracks = [];
 let currentTracks = [];
 let lastFocusedArchiveNode = null;
+
+const archiveLimits = {
+  idleDesktop: 72,
+  idleMobile: 28,
+  searchDesktop: 120,
+  searchMobile: 48,
+};
 
 function normalize(value) {
   return String(value || '').toLowerCase().trim();
@@ -139,16 +146,24 @@ function createArchiveNode(track, index, total) {
   const yJitter = (stableRandom(index, 4.43) - 0.5) * 4.2;
   const x = 50 + Math.cos(angle) * orbit * 44 + xJitter;
   const y = 50 + Math.sin(angle) * orbit * 39 + yJitter;
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  const minY = isMobile ? 14 : 8;
 
   button.style.left = `${Math.max(6, Math.min(94, x))}%`;
-  button.style.top = `${Math.max(8, Math.min(92, y))}%`;
+  button.style.top = `${Math.max(minY, Math.min(92, y))}%`;
   button.addEventListener('click', () => openArchiveTrack(track, button));
   return button;
 }
 
-function renderArchiveTracks(tracks) {
+function archiveDisplayLimit(hasQuery) {
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  if (hasQuery) return isMobile ? archiveLimits.searchMobile : archiveLimits.searchDesktop;
+  return isMobile ? archiveLimits.idleMobile : archiveLimits.idleDesktop;
+}
+
+function renderArchiveTracks(tracks, hasQuery) {
   archiveField.innerHTML = '';
-  const visible = tracks.slice(0, 260);
+  const visible = tracks.slice(0, archiveDisplayLimit(hasQuery));
 
   visible.forEach((track, index) => {
     archiveField.append(createArchiveNode(track, index, visible.length));
@@ -158,15 +173,17 @@ function renderArchiveTracks(tracks) {
 function updateArchive() {
   const filter = archiveFilter.value;
   const query = normalize(archiveQuery.value);
+  const hasQuery = Boolean(query);
   currentTracks = archiveTracks.filter((track) => trackMatches(track, filter, query));
+  const visibleLimit = archiveDisplayLimit(hasQuery);
 
-  archiveCount.textContent = `${currentTracks.length} tracks found`;
-  if (currentTracks.length > 260) {
-    archiveCount.textContent += ' · showing first 260';
+  archiveCount.textContent = hasQuery ? `${currentTracks.length} tracks found` : `${archiveTracks.length} tracks in archive`;
+  if (currentTracks.length > visibleLimit) {
+    archiveCount.textContent += ` · showing ${visibleLimit}`;
   }
 
-  renderNearbyGenres(inferredNearbyGenres(filter, query, currentTracks));
-  renderArchiveTracks(currentTracks);
+  renderNearbyGenres(hasQuery ? inferredNearbyGenres(filter, query, currentTracks) : []);
+  renderArchiveTracks(currentTracks, hasQuery);
 }
 
 function openArchiveSearch() {
@@ -268,5 +285,11 @@ window.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && document.body.classList.contains('is-archive-search-open')) closeArchiveSearch();
 });
 
+window.addEventListener('resize', () => {
+  window.clearTimeout(updateArchive.resizeTimer);
+  updateArchive.resizeTimer = window.setTimeout(updateArchive, 180);
+});
+
 flattenArchiveData();
 updateArchive();
+

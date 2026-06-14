@@ -360,3 +360,22 @@
 - Verified with:
   - `qa-step26-archive-radial-desktop.png`
   - `qa-step26-archive-radial-mobile.png`
+
+### Step 27 - Archive Density Reduction
+- Reduced the initial Archive title field from a full 260-track display to a lighter preview set.
+- Set idle display limits to 72 tracks on desktop and 28 tracks on mobile.
+- Set search display limits to 120 tracks on desktop and 48 tracks on mobile.
+- Hid `NEARBY GENRES` until the user enters a query, reducing initial visual noise.
+- Slightly reduced Archive title size, weight, max width, and glow intensity.
+- Added resize recalculation so density updates when viewport width changes.
+- Updated the Archive script cache-busting query string.
+- Verified with:
+  - `qa-step27-archive-density-desktop.png`
+  - `qa-step27-archive-density-mobile.png`
+
+### Step 28 - Archive Mobile Field Position
+- Lowered the mobile Archive title field so song titles no longer crowd the logo/header area.
+- Added a mobile-specific minimum top boundary for Archive title placement.
+- Updated Archive cache-busting query strings for stylesheet and script.
+- Verified with:
+  - `qa-step28-archive-mobile-lower-field.png`
