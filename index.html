@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SONICGLOBE - Dig the World's Music</title>
   <meta name="description" content="Explore global music history by decade, country, genre, continent, and random discovery.">
-  <link rel="stylesheet" href="style.css?v=20260609-nav1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Black+Han+Sans&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendard-jpvariable.css">
+  <link rel="stylesheet" href="style.css?v=20260616-archiveinfo1">
 </head>
 <body>
   <canvas id="starfield" aria-hidden="true"></canvas>
@@ -21,9 +26,9 @@
     <header class="site-header">
       <a class="logo" href="./index.html">SONICGLOBE</a>
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="./index.html" aria-current="page">DIG</a>
-        <a href="./signals.html">SIGNALS</a>
-        <a href="./archive.html">ARCHIVE</a>
+        <a href="./index.html" aria-current="page" aria-label="01 DIG"><span class="nav-index">01</span><span class="nav-label">DIG</span></a>
+        <a href="./signals.html" aria-label="02 SIGNALS"><span class="nav-index">02</span><span class="nav-label">SIGNALS</span></a>
+        <a href="./archive.html" aria-label="03 ARCHIVE"><span class="nav-index">03</span><span class="nav-label">ARCHIVE</span></a>
       </nav>
       <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span>
@@ -31,11 +36,39 @@
         <span></span>
       </button>
       <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
-        <a href="./index.html" aria-current="page">DIG</a>
-        <a href="./signals.html">SIGNALS</a>
-        <a href="./archive.html">ARCHIVE</a>
+        <a href="./index.html" aria-current="page" aria-label="01 DIG"><span class="nav-index">01</span><span class="nav-label">DIG</span></a>
+        <a href="./signals.html" aria-label="02 SIGNALS"><span class="nav-index">02</span><span class="nav-label">SIGNALS</span></a>
+        <a href="./archive.html" aria-label="03 ARCHIVE"><span class="nav-index">03</span><span class="nav-label">ARCHIVE</span></a>
       </nav>
     </header>
+
+    <aside class="landing-meta landing-meta-primary" aria-label="SonicGlobe archive status">
+      <dl>
+        <div>
+          <dt>ARCHIVE MODE</dt>
+          <dd>WORLD MUSIC DIGGING</dd>
+        </div>
+        <div>
+          <dt>DECADES</dt>
+          <dd>1950S-2020S</dd>
+        </div>
+        <div>
+          <dt>SIGNALS FOUND</dt>
+          <dd id="landing-signal-count">---</dd>
+        </div>
+      </dl>
+    </aside>
+
+    <aside class="landing-meta landing-meta-secondary" aria-label="SonicGlobe discovery route">
+      <p>ROUTE</p>
+      <strong>DECADE / COUNTRY / GENRE / SURPRISE</strong>
+      <span>SELECT A DECADE TO RECEIVE A SIGNAL</span>
+    </aside>
+
+    <aside id="selection-signal" class="selection-signal" aria-hidden="true" aria-live="polite">
+      <span>SELECTED_DECADE</span>
+      <strong id="selection-signal-value">----</strong>
+    </aside>
 
     <section class="stage stage-decades" aria-label="Select decade">
       <p class="stage-guide guide-decades">Select Your Decades</p>
@@ -62,13 +95,44 @@
     </section>
   </main>
 
+  <aside id="intro-briefing" class="intro-briefing" aria-hidden="true" aria-labelledby="intro-title">
+    <button class="intro-close" type="button" aria-label="인트로 닫기" data-close-intro>X</button>
+    <div class="intro-system-line">
+      <span>SONICGLOBE ARCHIVE</span>
+      <span>STATUS: ACTIVE</span>
+    </div>
+    <p class="intro-kicker">접속 브리핑</p>
+    <h1 id="intro-title">세계 음악 아카이브에 접속했습니다</h1>
+    <dl class="intro-signal-grid" aria-label="아카이브 요약">
+      <div>
+        <dt>DECADES</dt>
+        <dd>1950S-2020S</dd>
+      </div>
+      <div>
+        <dt>SIGNALS</dt>
+        <dd id="intro-signal-count">---</dd>
+      </div>
+      <div>
+        <dt>ROUTE</dt>
+        <dd>DIG / SIGNALS / ARCHIVE</dd>
+      </div>
+    </dl>
+    <p class="intro-copy">연대를 선택하면 지구 위의 국가, 장르, 추천 경로를 따라 세계의 음악 신호를 탐색할 수 있습니다.</p>
+    <ol class="intro-steps">
+      <li><span>01</span>먼저 연대를 선택하세요</li>
+      <li><span>02</span>국가, 장르, 유명곡, Surprise Me 중 하나를 고르세요</li>
+      <li><span>03</span>재생 버튼을 누르거나 YouTube로 열어보세요</li>
+    </ol>
+    <button class="intro-start" type="button" data-close-intro>디깅 시작</button>
+  </aside>
+
   <aside id="track-card" class="track-card" aria-live="polite" aria-hidden="true">
     <button id="track-card-close" class="track-card-close" type="button" aria-label="Close song details">X</button>
     <div class="track-card-meta">
-      <span id="card-country">SONIC GLOBE</span>
-      <span id="card-year">----</span>
+      <span id="card-country">SONIC ARCHIVE</span>
+      <span id="card-year">READY</span>
     </div>
-    <h2 id="card-song">클릭하며 음악 탐색</h2>
+    <h2 id="card-song">세계 음악 신호 대기중</h2>
     <p id="card-artist">Select a decade</p>
     <p id="card-description"></p>
   </aside>
@@ -85,11 +149,11 @@
 
     <div class="player-track">
       <div class="player-meta">
-        <span id="player-country">SONIC GLOBE</span>
-        <span id="player-year">----</span>
+        <span id="player-country">SONIC ARCHIVE</span>
+        <span id="player-year">READY</span>
       </div>
-      <strong id="player-song">클릭하며 음악 탐색</strong>
-      <span id="player-artist">SONIC GLOBE</span>
+      <strong id="player-song">세계 음악 신호 대기중</strong>
+      <span id="player-artist">Select a decade to receive a signal</span>
     </div>
 
     <div class="player-center">
@@ -120,6 +184,6 @@
 
   <script src="nav.js?v=20260609-nav1"></script>
   <script src="data.js?v=20260608-clickfix1"></script>
-  <script src="app.js?v=20260609-surpriseme1"></script>
+  <script src="app.js?v=20260616-interact1"></script>
 </body>
 </html>

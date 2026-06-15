@@ -379,3 +379,189 @@
 - Updated Archive cache-busting query strings for stylesheet and script.
 - Verified with:
   - `qa-step28-archive-mobile-lower-field.png`
+
+### Step 29 - Archive Search Icon Reference Match
+- Updated the Archive search icon to better match the provided reference image.
+- Enlarged the magnifier ring and extended the handle into a longer, thicker diagonal shape.
+- Updated the Archive stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step29-search-icon-reference-desktop.png`
+  - `qa-step29-search-icon-reference-mobile.png`
+
+### Step 30 - Archive Search Icon SVG Rebuild
+- Replaced the CSS-only magnifier construction with an inline SVG icon for more reliable geometry.
+- Removed fixed stroke scaling so the ring keeps a larger inner opening at small sizes.
+- Adjusted the SVG ring radius and handle path to better match the provided search icon proportion.
+- Verified with:
+  - `qa-step30-search-icon-svg-desktop.png`
+  - `qa-step30-search-icon-svg-mobile.png`
+
+### Step 31 - Archive Search Icon Handle Trim
+- Shortened the SVG magnifier handle slightly while keeping the ring size and stroke weight unchanged.
+- Updated the Archive stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step31-search-icon-handle-desktop.png`
+  - `qa-step31-search-icon-handle-mobile.png`
+
+### Step 32 - Faster Music-First Entry
+- Added an early first-screen music cue with `Dig the World's Music` and `Start with a decade`.
+- Reduced the opening sequence timing so the page becomes interactive around 1.5 seconds instead of waiting over 3 seconds.
+- Shortened star, planet, header, stage, option, and player entrance delays.
+- Updated the default player subtitle to make the first screen feel music-related before a track is selected.
+- Updated the main stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step32-entry-0800-desktop.png`
+  - `qa-step32-entry-1600-desktop.png`
+  - `qa-step32-entry-1600-mobile.png`
+
+### Step 33 - First Visit Intro Briefing
+- Added a dismissible first-visit intro briefing to explain the basic SonicGlobe flow.
+- Included short usage steps:
+  - Select a decade.
+  - Choose country, genre, famous, or surprise.
+  - Press play or open YouTube.
+- Stored dismissal in `localStorage` so the briefing does not reappear after the user closes it.
+- Added Escape key support and close-on-decade-selection behavior.
+- Updated the main script cache-busting query string.
+- Verified with:
+  - `qa-step33-intro-briefing-desktop.png`
+  - `qa-step33-intro-briefing-mobile.png`
+
+### Step 34 - Restore Decade Guide Copy
+- Restored the main decade guide text to `Select Your Decades`.
+- Removed the two-line music tagline styling from the persistent decade guide.
+- Confirmed the decade guide uses Pretendard JP Variable at light weight (`300`).
+- Updated the main stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step34-guide-select-decades-desktop.png`
+
+### Step 35 - Korean Intro Briefing Copy
+- Translated the first-visit intro briefing into Korean.
+- Updated the intro close button aria label to Korean.
+- Adjusted intro kicker, step, and button typography for Korean readability.
+- Updated the main stylesheet cache-busting query string.
+- Verified with:
+  - `qa-step35-intro-korean-desktop.png`
+  - `qa-step35-intro-korean-mobile.png`
+
+### Step 36 - First Optimization Pass
+- Moved font loading out of `style.css` `@import` rules and into page-level `<link>` tags.
+- Added preconnect hints for Google Fonts, Google font assets, and jsDelivr.
+- Removed the unused tracked `stylesheet.css` file.
+- Reduced starfield workload from 180 stars to 150 on desktop and 90 on mobile.
+- Capped mobile starfield device pixel ratio at 1.5 to reduce canvas draw cost.
+- Added starfield pause/resume behavior with `visibilitychange`.
+- Added `prefers-reduced-motion` support so starfield animation becomes static for reduced-motion users.
+- Cleaned Signals and Archive meta descriptions while touching page heads.
+- Updated cache-busting query strings for shared CSS and main script.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step36-optimized-entry-desktop.png`
+
+### Step 37 - Mobile Rendering Optimization
+- Disabled the animated Earth texture on mobile to reduce continuous repaint cost.
+- Reduced mobile Earth glow, rim shadow, and saturation/brightness filter intensity.
+- Removed mobile backdrop blur from the intro panel, Signals cards, Archive search panel, and Archive search overlay.
+- Reduced mobile box-shadow strength for intro, article cards, dialogs, search panels, and the bottom track card.
+- Reduced mobile text glow for floating choice buttons and Archive orbit nodes.
+- Disabled hover/focus filter effects on mobile-only floating choices and Archive nodes.
+- Updated shared stylesheet cache-busting query strings.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step37-mobile-opt-index.png`
+  - `qa-step37-mobile-opt-signals.png`
+  - `qa-step37-mobile-opt-archive.png`
+
+### Step 38 - Landing Archive Metadata Layer
+- Added a landing-only archive metadata layer inspired by the Sample HTML reference.
+- Added primary status copy for archive mode, decade range, and live signal count.
+- Connected `SIGNALS FOUND` to the actual flattened music database count.
+- Added a secondary route note near the bottom-left desktop area.
+- Kept metadata visible only on the decade landing view so later choice screens stay clean.
+- Hid the secondary metadata on mobile and tightened the primary metadata width to avoid crowding.
+- Updated shared stylesheet cache-busting query strings.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step38-landing-meta-desktop.png`
+  - `qa-step38-landing-meta-mobile.png`
+
+### Step 39 - Archive Briefing Intro Panel
+- Reworked the first-visit intro into a SonicGlobe archive briefing panel.
+- Added `SONICGLOBE ARCHIVE`, active status, decade range, live signal count, and route summary.
+- Connected the intro `SIGNALS` value to the actual flattened music database count.
+- Updated intro copy to explain the discovery flow in Korean.
+- Changed the intro action copy to `디깅 시작`.
+- Updated the intro storage key to `sonicglobeIntroSeenV2` so users see the refreshed briefing once.
+- Hid landing metadata and dimmed decade buttons while the briefing is open to improve readability.
+- Adjusted mobile intro system-line layout so the close button does not collide with status text.
+- Updated shared stylesheet cache-busting query strings.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step39-intro-briefing-desktop.png`
+  - `qa-step39-intro-briefing-mobile.png`
+
+### Step 40 - Numbered Poster Navigation
+- Updated the shared header navigation to use numbered poster-style entries: `01 DIG`, `02 SIGNALS`, and `03 ARCHIVE`.
+- Applied the numbered navigation to desktop and mobile menus across Dig, Signals, and Archive pages.
+- Added separate `nav-index` and `nav-label` spans for styling control.
+- Added `aria-label` values so numbered labels are read with clear spacing.
+- Styled desktop navigation with small cyan/hot index markers and Bebas Neue labels.
+- Styled mobile menu links as compact numbered rows with subtle separators.
+- Preserved active page highlighting for each page.
+- Updated shared stylesheet cache-busting query strings.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step40-numbered-nav-desktop.png`
+  - `qa-step40-numbered-nav-mobile-open.png`
+
+### Step 41 - Decade Interaction Feedback
+- Added subtle pointer-based parallax to the landing Earth background on fine-pointer devices.
+- Added reduced-motion safeguards so parallax is disabled for users who prefer reduced motion.
+- Refined decade hover/focus feedback with a smaller lift, glow, and cyan signal accent.
+- Added a `SELECTED_DECADE` signal readout that appears briefly after a decade is clicked.
+- Added mobile positioning for the selected decade signal so it stays inside the viewport.
+- Reset parallax during decade-to-choice transitions to prevent stale transform values.
+- Updated cache-busting query strings for shared CSS and the main app script.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step41-decade-hover-desktop.png`
+  - `qa-step41-decade-selected-desktop.png`
+  - `qa-step41-decade-selected-mobile.png`
+
+### Step 42 - Player Default State Alignment
+- Updated the default bottom player copy to feel more like a ready music archive state.
+- Changed default metadata to `SONIC ARCHIVE / READY`.
+- Changed the default track title to `세계 음악 신호 대기중`.
+- Changed the default subtitle to `Select a decade to receive a signal`.
+- Repositioned the player center group as an absolute centered layer inside the player bar.
+- Added `margin-left: auto` to the volume group so it stays pinned to the right.
+- Adjusted mobile player track width so the title does not collide with the centered play button.
+- Updated shared stylesheet cache-busting query strings.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step42-player-default-desktop.png`
+  - `qa-step42-player-default-mobile.png`
+
+### Step 43 - Archive System Metadata Layer
+- Added Sample-inspired Archive system panels for total signals, countries, genres, active filter, and node field status.
+- Added search protocol metadata inside the Archive search panel.
+- Added deterministic Signal IDs and node indexes to flattened archive tracks.
+- Added hover/focus Signal ID labels to archive song nodes.
+- Added a detail record grid for SIGNAL ID, REGION, YEAR, DECADE, and NODE.
+- Added related genre chips to the detail modal using the existing nearby genre inference.
+- Hid side archive system panels on mobile while keeping search/detail metadata visible.
+- Updated Archive script and shared stylesheet cache-busting query strings.
+- Verified with:
+  - `node --check app.js`
+  - `node --check archive.js`
+  - `qa-step43-archive-system-desktop.png`
+  - `qa-step43-archive-search-system-desktop.png`
+  - `qa-step43-archive-detail-record-desktop.png`
+  - `qa-step43-archive-detail-record-mobile.png`

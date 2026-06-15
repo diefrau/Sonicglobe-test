@@ -15,6 +15,20 @@ const archiveArtist = document.querySelector('#archive-artist');
 const archiveDescription = document.querySelector('#archive-description');
 const archiveTags = document.querySelector('#archive-tags');
 const archiveYoutubeLink = document.querySelector('#archive-youtube-link');
+const archiveSystemTotal = document.querySelector('#archive-system-total');
+const archiveSystemCountries = document.querySelector('#archive-system-countries');
+const archiveSystemGenres = document.querySelector('#archive-system-genres');
+const archiveSystemFilter = document.querySelector('#archive-system-filter');
+const archiveSystemStatus = document.querySelector('#archive-system-status');
+const archiveSystemQuery = document.querySelector('#archive-system-query');
+const archivePanelMode = document.querySelector('#archive-panel-mode');
+const archivePanelNodes = document.querySelector('#archive-panel-nodes');
+const archiveRecordId = document.querySelector('#archive-record-id');
+const archiveRecordRegion = document.querySelector('#archive-record-region');
+const archiveRecordYear = document.querySelector('#archive-record-year');
+const archiveRecordDecade = document.querySelector('#archive-record-decade');
+const archiveRecordNode = document.querySelector('#archive-record-node');
+const archiveRelatedGenres = document.querySelector('#archive-related-genres');
 
 const genreNeighbors = {
   'city pop': ['J-Pop', 'Kayokyoku', 'J-R&B', 'Japanese Indie', 'Enka', 'Shibuya-kei', 'J-Rock', 'Japanese Singer-Songwriter', 'Jazz Fusion'],
@@ -45,6 +59,14 @@ function decadeOfArchive(year) {
   return `${Math.floor(Number(year) / 10) * 10}s`;
 }
 
+function archiveSignalId(track, index) {
+  return `SG-${track.year}-${String(index + 1).padStart(4, '0')}`;
+}
+
+function setArchiveText(element, value) {
+  if (element) element.textContent = value || '';
+}
+
 function stableRandom(index, salt = 1) {
   const x = Math.sin((index + 1) * 999.91 * salt) * 10000;
   return x - Math.floor(x);
@@ -69,7 +91,33 @@ function flattenArchiveData() {
     });
   });
 
-  archiveTracks = tracks.sort((a, b) => a.year - b.year || a.country.localeCompare(b.country));
+  archiveTracks = tracks
+    .sort((a, b) => a.year - b.year || a.country.localeCompare(b.country) || String(a.song || '').localeCompare(String(b.song || '')))
+    .map((track, index) => ({
+      ...track,
+      archiveIndex: index + 1,
+      signalId: archiveSignalId(track, index),
+    }));
+}
+
+function updateArchiveSystem(filter, rawQuery, hasQuery, visibleLimit) {
+  const countryCount = new Set(archiveTracks.map((track) => track.country)).size;
+  const genreCount = new Set(archiveTracks.flatMap((track) => track.genres)).size;
+  const shownCount = Math.min(currentTracks.length, visibleLimit);
+  const filterLabel = hasQuery ? `${filter.toUpperCase()} QUERY` : 'ALL SIGNALS';
+  const statusLabel = hasQuery ? `${currentTracks.length} MATCHES` : 'ORBITAL NODE MAP';
+  const queryLabel = hasQuery
+    ? `QUERY: ${rawQuery}`
+    : `DISPLAY: ${shownCount} OF ${archiveTracks.length} NODES`;
+
+  setArchiveText(archiveSystemTotal, String(archiveTracks.length).padStart(3, '0'));
+  setArchiveText(archiveSystemCountries, String(countryCount).padStart(2, '0'));
+  setArchiveText(archiveSystemGenres, String(genreCount).padStart(2, '0'));
+  setArchiveText(archiveSystemFilter, filterLabel);
+  setArchiveText(archiveSystemStatus, statusLabel);
+  setArchiveText(archiveSystemQuery, queryLabel);
+  setArchiveText(archivePanelMode, `FILTER: ${filter.toUpperCase()}`);
+  setArchiveText(archivePanelNodes, `NODES: ${shownCount}/${currentTracks.length}`);
 }
 
 function trackMatches(track, filter, query) {
@@ -135,7 +183,9 @@ function createArchiveNode(track, index, total) {
   button.className = 'archive-node';
   button.type = 'button';
   button.textContent = track.song || '-';
-  button.title = `${track.song} - ${track.artist}`;
+  button.title = `${track.signalId} · ${track.song} - ${track.artist}`;
+  button.dataset.signalId = track.signalId;
+  button.setAttribute('aria-label', `${track.signalId} ${track.song || 'Unknown title'} by ${track.artist || 'Unknown artist'}`);
   button.style.setProperty('--i', index);
 
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
@@ -172,7 +222,8 @@ function renderArchiveTracks(tracks, hasQuery) {
 
 function updateArchive() {
   const filter = archiveFilter.value;
-  const query = normalize(archiveQuery.value);
+  const rawQuery = archiveQuery.value.trim();
+  const query = normalize(rawQuery);
   const hasQuery = Boolean(query);
   currentTracks = archiveTracks.filter((track) => trackMatches(track, filter, query));
   const visibleLimit = archiveDisplayLimit(hasQuery);
@@ -182,6 +233,7 @@ function updateArchive() {
     archiveCount.textContent += ` · showing ${visibleLimit}`;
   }
 
+  updateArchiveSystem(filter, rawQuery, hasQuery, visibleLimit);
   renderNearbyGenres(hasQuery ? inferredNearbyGenres(filter, query, currentTracks) : []);
   renderArchiveTracks(currentTracks, hasQuery);
 }
@@ -203,12 +255,50 @@ function closeArchiveSearch(options = {}) {
   }
 }
 
+function renderArchiveRelatedGenres(track) {
+  if (!archiveRelatedGenres) return;
+
+  archiveRelatedGenres.innerHTML = '';
+  const primaryGenre = track.genres[0];
+  if (!primaryGenre) return;
+
+  const related = inferredNearbyGenres('genre', primaryGenre, archiveTracks)
+    .filter((genre) => !track.genres.some((item) => normalize(item) === normalize(genre)))
+    .slice(0, 5);
+
+  if (!related.length) return;
+
+  const label = document.createElement('span');
+  label.textContent = 'RELATED GENRES';
+  archiveRelatedGenres.append(label);
+
+  related.forEach((genre) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = genre;
+    button.addEventListener('click', () => {
+      closeArchiveTrack();
+      archiveFilter.value = 'genre';
+      archiveQuery.value = genre;
+      updateArchive();
+      openArchiveSearch();
+    });
+    archiveRelatedGenres.append(button);
+  });
+}
+
 function openArchiveTrack(track, sourceButton) {
   lastFocusedArchiveNode = sourceButton;
-  archiveMeta.textContent = `${track.country} · ${track.year} · ${track.genres.join(' / ') || 'Unknown Genre'}`;
+  archiveMeta.textContent = `${track.signalId} · ${track.country} · ${track.year} · ${track.genres.join(' / ') || 'Unknown Genre'}`;
   archiveTitle.textContent = track.song || '-';
   archiveArtist.textContent = track.artist || '-';
   archiveDescription.textContent = track.description || '';
+  setArchiveText(archiveRecordId, track.signalId);
+  setArchiveText(archiveRecordRegion, track.country);
+  setArchiveText(archiveRecordYear, String(track.year));
+  setArchiveText(archiveRecordDecade, track.decade);
+  setArchiveText(archiveRecordNode, String(track.archiveIndex).padStart(4, '0'));
+  renderArchiveRelatedGenres(track);
   archiveTags.innerHTML = '';
   track.genres.forEach((genre) => {
     const tag = document.createElement('button');

@@ -1,11 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SONICGLOBE - Archive</title>
-  <meta name="description" content="SonicGlobe 전체 음악 아카이브 검색과 장르 디깅.">
-  <link rel="stylesheet" href="style.css?v=20260614-density2">
+  <meta name="description" content="SonicGlobe 전체 음악 아카이브를 검색하고 장르와 시대를 탐색하세요.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Black+Han+Sans&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendard-jpvariable.css">
+  <link rel="stylesheet" href="style.css?v=20260616-archiveinfo1">
 </head>
 <body class="is-settled archive-page">
   <main class="app archive-app">
@@ -19,9 +24,9 @@
     <header class="site-header">
       <a class="logo" href="./index.html">SONICGLOBE</a>
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="./index.html">DIG</a>
-        <a href="./signals.html">SIGNALS</a>
-        <a href="./archive.html" aria-current="page">ARCHIVE</a>
+        <a href="./index.html" aria-label="01 DIG"><span class="nav-index">01</span><span class="nav-label">DIG</span></a>
+        <a href="./signals.html" aria-label="02 SIGNALS"><span class="nav-index">02</span><span class="nav-label">SIGNALS</span></a>
+        <a href="./archive.html" aria-current="page" aria-label="03 ARCHIVE"><span class="nav-index">03</span><span class="nav-label">ARCHIVE</span></a>
       </nav>
       <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span>
@@ -29,19 +34,55 @@
         <span></span>
       </button>
       <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
-        <a href="./index.html">DIG</a>
-        <a href="./signals.html">SIGNALS</a>
-        <a href="./archive.html" aria-current="page">ARCHIVE</a>
+        <a href="./index.html" aria-label="01 DIG"><span class="nav-index">01</span><span class="nav-label">DIG</span></a>
+        <a href="./signals.html" aria-label="02 SIGNALS"><span class="nav-index">02</span><span class="nav-label">SIGNALS</span></a>
+        <a href="./archive.html" aria-current="page" aria-label="03 ARCHIVE"><span class="nav-index">03</span><span class="nav-label">ARCHIVE</span></a>
       </nav>
     </header>
+
+    <aside class="archive-system archive-system-primary" aria-label="Archive system status">
+      <p>ARCHIVE INDEX</p>
+      <dl>
+        <div>
+          <dt>SIGNALS</dt>
+          <dd id="archive-system-total">---</dd>
+        </div>
+        <div>
+          <dt>COUNTRIES</dt>
+          <dd id="archive-system-countries">---</dd>
+        </div>
+        <div>
+          <dt>GENRES</dt>
+          <dd id="archive-system-genres">---</dd>
+        </div>
+        <div>
+          <dt>FILTER</dt>
+          <dd id="archive-system-filter">ALL SIGNALS</dd>
+        </div>
+      </dl>
+    </aside>
+
+    <aside class="archive-system archive-system-secondary" aria-label="Archive field status">
+      <p>NODE FIELD</p>
+      <strong id="archive-system-status">ORBITAL MAP</strong>
+      <span id="archive-system-query">DISPLAY: PREVIEW NODES</span>
+    </aside>
 
     <div class="archive-search-backdrop" data-close-archive-search></div>
     <section class="archive-hub" aria-label="Archive search">
       <button id="archive-search-toggle" class="archive-search-toggle" type="button" aria-label="Open archive search" aria-expanded="false" aria-controls="archive-search-panel">
-        <span></span>
+        <svg class="archive-search-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle cx="38" cy="38" r="28"></circle>
+          <path d="M58 58 L82 82"></path>
+        </svg>
       </button>
       <div id="archive-search-panel" class="archive-search-panel">
         <button class="archive-search-close" type="button" aria-label="Close archive search" data-close-archive-search>X</button>
+        <div class="archive-panel-meta">
+          <span>SEARCH PROTOCOL</span>
+          <strong id="archive-panel-mode">FILTER: ALL</strong>
+          <em id="archive-panel-nodes">NODES: ---</em>
+        </div>
         <form id="archive-search" class="archive-search">
           <label class="archive-filter-label">
             <span>FILTER</span>
@@ -77,7 +118,30 @@
         <p id="archive-detail-meta" class="signal-meta"></p>
         <h2 id="archive-title"></h2>
         <p id="archive-artist" class="archive-artist"></p>
+        <dl class="archive-record" aria-label="Archive record metadata">
+          <div>
+            <dt>SIGNAL ID</dt>
+            <dd id="archive-record-id">---</dd>
+          </div>
+          <div>
+            <dt>REGION</dt>
+            <dd id="archive-record-region">---</dd>
+          </div>
+          <div>
+            <dt>YEAR</dt>
+            <dd id="archive-record-year">---</dd>
+          </div>
+          <div>
+            <dt>DECADE</dt>
+            <dd id="archive-record-decade">---</dd>
+          </div>
+          <div>
+            <dt>NODE</dt>
+            <dd id="archive-record-node">---</dd>
+          </div>
+        </dl>
         <p id="archive-description" class="archive-description"></p>
+        <div id="archive-related-genres" class="archive-related-genres" aria-label="Related genres"></div>
         <div id="archive-tags" class="archive-tags"></div>
         <a id="archive-youtube-link" class="signal-action" href="#" target="_blank" rel="noreferrer">YOUTUBE에서 열기</a>
       </div>
@@ -86,6 +150,7 @@
 
   <script src="nav.js?v=20260609-nav1"></script>
   <script src="data.js?v=20260608-clickfix1"></script>
-  <script src="archive.js?v=20260614-density3"></script>
+  <script src="archive.js?v=20260616-archiveinfo1"></script>
 </body>
 </html>
+

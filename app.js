@@ -11,6 +11,11 @@ const submenuGuide = $('#submenu-guide');
 const trackCard = $('#track-card');
 const youtubeWrap = $('#youtube-frame-wrap');
 const youtubeFrame = $('#youtube-frame');
+const introBriefing = $('#intro-briefing');
+const landingSignalCount = $('#landing-signal-count');
+const introSignalCount = $('#intro-signal-count');
+const selectionSignal = $('#selection-signal');
+const selectionSignalValue = $('#selection-signal-value');
 
 const countryLabels = new Map([
   ['United States', 'USA'],
@@ -133,12 +138,60 @@ const state = {
   isTransitioning: false,
 };
 
+const INTRO_STORAGE_KEY = 'sonicglobeIntroSeenV2';
+
 function displayCountry(country) {
   return countryLabels.get(country) || country.toUpperCase();
 }
 
 function decadeOf(year) {
   return Math.floor(Number(year) / 10) * 10;
+}
+
+function hasSeenIntro() {
+  try {
+    return window.localStorage.getItem(INTRO_STORAGE_KEY) === 'true';
+  } catch (error) {
+    return false;
+  }
+}
+
+function markIntroSeen() {
+  try {
+    window.localStorage.setItem(INTRO_STORAGE_KEY, 'true');
+  } catch (error) {
+    // Ignore storage failures so the briefing remains dismissible in file previews.
+  }
+}
+
+function closeIntroBriefing() {
+  if (!introBriefing) return;
+  introBriefing.classList.remove('is-active');
+  introBriefing.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('is-intro-open');
+  markIntroSeen();
+}
+
+function setupIntroBriefing() {
+  if (!introBriefing) return;
+
+  introBriefing.querySelectorAll('[data-close-intro]').forEach((control) => {
+    control.addEventListener('click', closeIntroBriefing);
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && introBriefing.classList.contains('is-active')) {
+      closeIntroBriefing();
+    }
+  });
+
+  if (hasSeenIntro()) return;
+
+  window.setTimeout(() => {
+    introBriefing.classList.add('is-active');
+    introBriefing.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('is-intro-open');
+  }, 900);
 }
 
 function decadeLabel(decade) {
@@ -199,6 +252,14 @@ function flattenData() {
     }
     state.tracksByDecade.get(track.decade).push(track);
   });
+
+  if (landingSignalCount) {
+    landingSignalCount.textContent = String(tracks.length).padStart(3, '0');
+  }
+
+  if (introSignalCount) {
+    introSignalCount.textContent = String(tracks.length).padStart(3, '0');
+  }
 }
 
 function makeButton(label, onClick, options = {}) {
@@ -225,6 +286,7 @@ function setView(view) {
 
 let layoutFrame = 0;
 let resizeSettleTimers = [];
+let selectionSignalTimer = 0;
 
 function currentLayoutSet() {
   const viewport = viewportSize();
@@ -424,8 +486,72 @@ function scheduleResizeLayout() {
   resizeSettleTimers = [140, 360, 720, 1120].map((delay) => window.setTimeout(requestLayout, delay));
 }
 
+function showSelectionSignal(decade) {
+  if (!selectionSignal || !selectionSignalValue) return;
+
+  window.clearTimeout(selectionSignalTimer);
+  selectionSignalValue.textContent = `${decade}s`.toUpperCase();
+  selectionSignal.classList.add('is-active');
+  selectionSignal.setAttribute('aria-hidden', 'false');
+
+  selectionSignalTimer = window.setTimeout(() => {
+    selectionSignal.classList.remove('is-active');
+    selectionSignal.setAttribute('aria-hidden', 'true');
+  }, 980);
+}
+
+function resetLandingParallax() {
+  if (!app) return;
+  app.style.setProperty('--parallax-x', '0px');
+  app.style.setProperty('--parallax-y', '0px');
+}
+
+function setupLandingInteractions() {
+  if (!app) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = window.matchMedia('(pointer: fine)');
+  let pointerFrame = 0;
+  let pendingPointer = null;
+
+  const applyParallax = () => {
+    pointerFrame = 0;
+    if (!pendingPointer) return;
+
+    if (reducedMotion.matches || !finePointer.matches || state.isTransitioning || app.dataset.view !== 'decades' || document.body.classList.contains('is-intro-open')) {
+      resetLandingParallax();
+      return;
+    }
+
+    const viewport = viewportSize();
+    const x = ((pendingPointer.x / viewport.width) - 0.5) * 8;
+    const y = ((pendingPointer.y / viewport.height) - 0.5) * 5;
+    app.style.setProperty('--parallax-x', `${x.toFixed(2)}px`);
+    app.style.setProperty('--parallax-y', `${y.toFixed(2)}px`);
+  };
+
+  window.addEventListener('pointermove', (event) => {
+    if (reducedMotion.matches || !finePointer.matches || state.isTransitioning || app.dataset.view !== 'decades' || document.body.classList.contains('is-intro-open')) {
+      resetLandingParallax();
+      return;
+    }
+
+    pendingPointer = { x: event.clientX, y: event.clientY };
+    if (!pointerFrame) pointerFrame = window.requestAnimationFrame(applyParallax);
+  }, { passive: true });
+
+  document.addEventListener('mouseleave', resetLandingParallax);
+
+  if (reducedMotion.addEventListener) {
+    reducedMotion.addEventListener('change', resetLandingParallax);
+  } else if (reducedMotion.addListener) {
+    reducedMotion.addListener(resetLandingParallax);
+  }
+}
+
 function goToDecades() {
   if (state.isTransitioning) return;
+  resetLandingParallax();
   app.classList.remove('is-orbiting', 'is-leaving-decades', 'is-entering-choices');
   setView('decades');
   window.setTimeout(requestLayout, 980);
@@ -434,6 +560,7 @@ function goToDecades() {
 function goToChoices() {
   if (state.isTransitioning) return;
   state.isTransitioning = true;
+  resetLandingParallax();
   app.classList.add('is-leaving-decades');
 
   window.setTimeout(() => {
@@ -457,10 +584,15 @@ function renderDecades() {
   decades.forEach((decade, index) => {
     const button = makeButton(decadeLabel(decade), () => {
       if (state.isTransitioning) return;
+      showSelectionSignal(decade);
+      closeIntroBriefing();
       state.selectedDecade = decade;
       goToChoices();
     }, { group: 'decades', index, layoutIndex: index });
     button.dataset.decade = String(decade);
+    button.addEventListener('pointerenter', () => button.classList.add('is-signal-hover'));
+    button.addEventListener('pointerleave', () => button.classList.remove('is-signal-hover'));
+    button.addEventListener('blur', () => button.classList.remove('is-signal-hover'));
     decadeButtons.append(button);
   });
   requestLayout();
@@ -689,15 +821,19 @@ function setupPlayer() {
 function setupStars() {
   const canvas = $('#starfield');
   const context = canvas.getContext('2d');
-  const stars = Array.from({ length: 180 }, () => ({
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobileStars = window.matchMedia('(max-width: 700px)');
+  const starCount = reducedMotion.matches ? 80 : (mobileStars.matches ? 90 : 150);
+  const stars = Array.from({ length: starCount }, () => ({
     x: Math.random(),
     y: Math.random(),
     r: Math.random() * 1.6 + 0.25,
     a: Math.random() * 0.75 + 0.2,
   }));
+  let animationId = null;
 
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, mobileStars.matches ? 1.5 : 2);
     canvas.width = Math.floor(window.innerWidth * dpr);
     canvas.height = Math.floor(window.innerHeight * dpr);
     canvas.style.width = `${window.innerWidth}px`;
@@ -714,12 +850,38 @@ function setupStars() {
       context.arc(star.x * window.innerWidth, star.y * window.innerHeight, star.r, 0, Math.PI * 2);
       context.fill();
     });
-    requestAnimationFrame(draw);
+    if (!reducedMotion.matches && !document.hidden) {
+      animationId = requestAnimationFrame(draw);
+    }
+  }
+
+  function start() {
+    if (animationId || document.hidden || reducedMotion.matches) return;
+    animationId = requestAnimationFrame(draw);
+  }
+
+  function stop() {
+    if (!animationId) return;
+    window.cancelAnimationFrame(animationId);
+    animationId = null;
   }
 
   resize();
   window.addEventListener('resize', resize);
-  requestAnimationFrame(draw);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stop();
+    } else {
+      start();
+    }
+  });
+  reducedMotion.addEventListener?.('change', () => {
+    stop();
+    draw(0);
+    start();
+  });
+  draw(0);
+  start();
 }
 
 function initFromUrlParams() {
@@ -755,6 +917,8 @@ function init() {
   renderDecades();
   setupPlayer();
   setupStars();
+  setupIntroBriefing();
+  setupLandingInteractions();
   initFromUrlParams();
   window.addEventListener('resize', scheduleResizeLayout);
   if (window.visualViewport) {
@@ -766,12 +930,12 @@ function init() {
   if (document.fonts) {
     document.fonts.ready.then(requestLayout);
   }
-  [600, 1700, 2600].forEach((delay) => window.setTimeout(requestLayout, delay));
+  [320, 820, 1400].forEach((delay) => window.setTimeout(requestLayout, delay));
   window.setTimeout(() => {
     document.body.classList.add('is-settled');
     layoutFloatingUI();
     window.setTimeout(layoutFloatingUI, 80);
-  }, 3300);
+  }, 1500);
 }
 
 init();
